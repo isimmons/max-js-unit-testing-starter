@@ -1,4 +1,5 @@
 export function transformToNumber(value) {
-  return +value;
-}
+  if (typeof value !== "number" && typeof value !== "string") return NaN;
 
+  return Number(value);
+}
