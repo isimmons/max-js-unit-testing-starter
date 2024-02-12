@@ -1,8 +1,8 @@
 export function add(numbers) {
-  let sum = 0;
+  if (!numbers || !Array.isArray(numbers))
+    throw Error("Invalid args: numbers must be an array");
 
-  for (const number of numbers) {
-    sum += number;
-  }
-  return sum;
+  if (numbers.length === 0) return 0;
+
+  return numbers.reduce((acc, curr) => Number(acc) + Number(curr), 0);
 }
