@@ -1,11 +1,16 @@
 import jwt from "jsonwebtoken";
 
-export function generateToken(userEmail, doneFn) {
+export function generateTokenWithCallback(userEmail, doneFn) {
   jwt.sign({ email: userEmail }, "secret123", doneFn);
+}
+
+export function generateTokenNoCallback(userEmail) {
+  return jwt.sign({ email: userEmail }, "secret123");
 }
 
 export function generateTokenPromise(userEmail) {
   const promise = new Promise((resolve, reject) => {
+    if (!userEmail) reject("Please provide a valid email");
     jwt.sign({ email: userEmail }, "secret123", (error, token) => {
       if (error) {
         reject(error);
