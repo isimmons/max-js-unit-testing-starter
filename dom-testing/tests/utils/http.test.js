@@ -1,14 +1,14 @@
-import { it, vi, expect } from 'vitest';
+import { it, vi, expect } from "vitest";
 
-import { HttpError } from './errors';
-import { sendDataRequest } from './http';
+import { HttpError } from "../../utils/errors";
+import { sendDataRequest } from "../../utils/http";
 
-const testResponseData = { testKey: 'testData' };
+const testResponseData = { testKey: "testData" };
 
 const testFetch = vi.fn((url, options) => {
   return new Promise((resolve, reject) => {
-    if (typeof options.body !== 'string') {
-      return reject('Not a string.');
+    if (typeof options.body !== "string") {
+      return reject("Not a string.");
     }
     const testResponse = {
       ok: true,
@@ -22,16 +22,16 @@ const testFetch = vi.fn((url, options) => {
   });
 });
 
-vi.stubGlobal('fetch', testFetch);
+vi.stubGlobal("fetch", testFetch);
 
-it('should return any available response data', () => {
-  const testData = { key: 'test' };
+it("should return any available response data", () => {
+  const testData = { key: "test" };
 
   return expect(sendDataRequest(testData)).resolves.toEqual(testResponseData);
 });
 
-it('should convert the provided data to JSON before sending the request', async () => {
-  const testData = { key: 'test' };
+it("should convert the provided data to JSON before sending the request", async () => {
+  const testData = { key: "test" };
 
   let errorMessage;
 
@@ -41,10 +41,10 @@ it('should convert the provided data to JSON before sending the request', async 
     errorMessage = error;
   }
 
-  expect(errorMessage).not.toBe('Not a string.');
+  expect(errorMessage).not.toBe("Not a string.");
 });
 
-it('should throw an HttpError in case of non-ok responses', () => {
+it("should throw an HttpError in case of non-ok responses", () => {
   testFetch.mockImplementationOnce((url, options) => {
     return new Promise((resolve, reject) => {
       const testResponse = {
@@ -59,7 +59,7 @@ it('should throw an HttpError in case of non-ok responses', () => {
     });
   });
 
-  const testData = { key: 'test' };
+  const testData = { key: "test" };
 
   return expect(sendDataRequest(testData)).rejects.toBeInstanceOf(HttpError);
 });
